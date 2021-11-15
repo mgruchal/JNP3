@@ -1,0 +1,59 @@
+openapi: 3.0.3
+info:
+  title: Users
+  description: Users
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /users:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUser"
+      responses:
+        200:
+          description: User created successfully
+
+        400:
+          description: Invalid request content
+
+    get:
+      responses:
+        200:
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
+      summary: Return list of users
+
+components:
+  schemas:
+    CreateUser:
+      required:
+        - username
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+    User:
+      properties:
+        username:
+          type: string
+          example: adam.kowalski
+        email:
+          type: string
+          format: email
+        id:
+          type: string
+          format: uuid
