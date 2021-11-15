@@ -1,0 +1,57 @@
+openapi: 3.0.3
+info:
+  title: Relations
+  description: Relations
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /followers/{user}:
+    get:
+      summary: List of users following given account.
+      responses:
+        200:
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Follow"
+
+
+  /followees/{user}:
+    get:
+      summary: List of users followed by the given account.
+      responses:
+        200:
+          description: Succcessful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Follow"
+    post:
+      summary: Start following an account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Follow"
+      responses:
+        400:
+          description: "Invalid request"
+        401:
+          description: "Not authorized"
+        200:
+          description: "Successful operation"
+components:
+  schemas:
+    Follow:
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
