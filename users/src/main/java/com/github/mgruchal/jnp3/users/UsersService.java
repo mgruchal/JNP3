@@ -1,6 +1,6 @@
-package com.github.mgruchal.jnp3;
+package com.github.mgruchal.jnp3.users;
 
-import com.github.mgruchal.jnp3.model.User;
+import com.github.mgruchal.jnp3.users.model.User;
 
 import java.util.Set;
 import java.util.UUID;

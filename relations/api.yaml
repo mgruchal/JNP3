@@ -6,26 +6,23 @@ info:
 servers:
   - url: 'https'
 paths:
-  /followers/{user}:
+  /users/{user}/followees:
+    parameters:
+      - name: user
+        in: path
+        schema:
+          type: string
+          format: uuid
     get:
-      summary: List of users following given account.
-      responses:
-        200:
-          description: Successful request
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Follow"
-
-
-  /followees/{user}:
-    get:
+      parameters:
+        - name: usernames
+          in: query
+          schema:
+            type: boolean
       summary: List of users followed by the given account.
       responses:
         200:
-          description: Succcessful request
+          description: Successful request
           content:
             application/json:
               schema:
@@ -46,6 +43,25 @@ paths:
           description: "Not authorized"
         200:
           description: "Successful operation"
+
+  /users/{user}/followers:
+    parameters:
+      - name: user
+        in: path
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: List of users following given account.
+      responses:
+        200:
+          description: Succcessful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Follow"
 components:
   schemas:
     Follow:

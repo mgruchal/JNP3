@@ -1,0 +1,52 @@
+###
+GET localhost:8011/users
+
+
+> {% client.global.set("user_one", response.body[0].id); client.global.set("user_two", response.body[1].id) %}
+
+###
+GET localhost:8011/users/{{user_one}}
+
+###
+GET http://localhost:8010/users/{{user_one}}/followees
+Accept: application/json
+
+###
+GET http://localhost:8010/users/{{user_one}}/followees?withUsernames=true
+Accept: application/json
+
+
+###
+POST http://localhost:8010/users/{{user_one}}/followees
+Accept: application/json
+Content-Type: application/json
+
+
+{
+  "id": "{{user_two}}"
+}
+###
+DELETE http://localhost:8010/users/{{user_one}}/followees
+Accept: application/json
+Content-Type: application/json
+
+
+{
+  "id": "{{user_two}}"
+}
+###
+POST http://localhost:8011/users
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "adam",
+  "email": "nie-tak-adam@example.com"
+}
+
+
+
+
+
+###
+GET localhost:8011/users/6ca68ff8-6a2c-4cdc-82b5-2d32f552c998

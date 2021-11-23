@@ -1,0 +1,36 @@
+POST http://localhost:8011/users
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "Adam",
+  "email": "adam@example.com"
+}
+
+###
+POST http://localhost:8011/users
+Accept: application/json
+Content-Type: application/json
+
+{
+"username": "nie-adam",
+"email": "nie-adam@example.com"
+}
+###
+POST http://localhost:8011/users
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "adam",
+  "email": "nie-tak-adam@example.com"
+}
+
+
+###
+GET localhost:8011/users
+
+> {% client.global.set("user_one", response.body[0].id) %}
+
+###
+GET localhost:8011/users/{{user_one}}

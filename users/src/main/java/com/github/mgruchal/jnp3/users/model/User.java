@@ -1,4 +1,4 @@
-package com.github.mgruchal.jnp3.model;
+package com.github.mgruchal.jnp3.users.model;
 
 import java.util.UUID;
 

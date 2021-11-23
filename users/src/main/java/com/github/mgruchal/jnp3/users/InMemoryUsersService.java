@@ -1,6 +1,6 @@
-package com.github.mgruchal.jnp3;
+package com.github.mgruchal.jnp3.users;
 
-import com.github.mgruchal.jnp3.model.User;
+import com.github.mgruchal.jnp3.users.model.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
@@ -15,6 +15,11 @@ public class InMemoryUsersService implements UsersService {
 
     private final Set<User> users = Collections.synchronizedSet(new LinkedHashSet<>());
 
+    public InMemoryUsersService() {
+        users.add(new User("elzbieta@example.com", "Elżbieta"));
+        users.add(new User("rajmund@example.com", "Rajmund"));
+    }
+
     @Override
     public User find(UUID id) throws UserNotFound {
         return users.stream().filter(user -> user.getId().equals(id)).findFirst().orElseThrow(UserNotFound::new);
@@ -22,7 +27,7 @@ public class InMemoryUsersService implements UsersService {
 
     @Override
     public void save(User user) throws UserAlreadyExists {
-        if (users.stream().anyMatch(existingUser -> existingUser.getId().equals(user.getId()) || existingUser.getUsername().equals(user.getUsername()) || existingUser.getEmail().equals(user.getEmail()))) {
+        if (users.stream().anyMatch(existingUser -> existingUser.getId().equals(user.getId()) || existingUser.getEmail().equals(user.getEmail()))) {
             throw new UserAlreadyExists();
         }
         users.add(user);

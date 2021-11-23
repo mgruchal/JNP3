@@ -22,6 +22,14 @@ paths:
           description: Invalid request content
 
     get:
+      parameters:
+        - in: query
+          name: id
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
       responses:
         200:
           description: List of users
@@ -33,7 +41,29 @@ paths:
                   $ref: "#/components/schemas/User"
 
       summary: Return list of users
-
+  /users/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: string
+          format: uuid
+    get:
+      responses:
+        200:
+          description: Show user details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        404:
+          description: User not found
+    delete:
+      responses:
+        200:
+          description: User deleted successfully
+        404:
+          description: User not found
 components:
   schemas:
     CreateUser:

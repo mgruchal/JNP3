@@ -1,0 +1,27 @@
+version: '3.5'
+services:
+  app:
+    image: maven:3-adoptopenjdk-11
+    volumes:
+      - ./:/app
+      - ../maven_cache:/root/.m2
+    working_dir: /app
+    command:
+      - mvn
+      - -Dquarkus.http.host=0.0.0.0
+      - -Dquarkus.rest-client.users-api.url=http://users:8080
+      - quarkus:dev
+    networks:
+      default:
+      jnp_applications:
+        aliases:
+          - relations
+    expose:
+      - 8080
+    ports:
+      - "8010:8080"
+
+networks:
+  jnp_applications:
+    name: jnp_applications
+    internal: true
