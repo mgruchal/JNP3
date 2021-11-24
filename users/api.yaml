@@ -1,13 +1,19 @@
 openapi: 3.0.3
 info:
   title: Users
-  description: Users
+  description: Users microservice responsible for storing account data.
   version: 1.0.0
 servers:
-  - url: 'https'
+  - url: 'http://localhost:8011'
+tags:
+  - name: Users
+    description: User management
 paths:
   /users:
     post:
+      tags:
+        - Users
+      summary: Register a new user account
       requestBody:
         required: true
         content:
@@ -22,6 +28,8 @@ paths:
           description: Invalid request content
 
     get:
+      tags:
+        - Users
       parameters:
         - in: query
           name: id
@@ -30,6 +38,10 @@ paths:
           required: false
           schema:
             type: array
+            items:
+              type: string
+              format: uuid
+
       responses:
         200:
           description: List of users
@@ -40,15 +52,19 @@ paths:
                 items:
                   $ref: "#/components/schemas/User"
 
-      summary: Return list of users
+      summary: Return a list of users
   /users/{id}:
     parameters:
       - name: id
         in: path
+        required: true
         schema:
           type: string
           format: uuid
     get:
+      tags:
+        - Users
+      summary: Fetch specific user profile
       responses:
         200:
           description: Show user details
@@ -59,6 +75,9 @@ paths:
         404:
           description: User not found
     delete:
+      tags:
+        - Users
+      summary: Delete a user and all their data
       responses:
         200:
           description: User deleted successfully
