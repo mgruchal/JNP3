@@ -15,11 +15,6 @@ public class InMemoryUsersService implements UsersService {
 
     private final Set<User> users = Collections.synchronizedSet(new LinkedHashSet<>());
 
-    public InMemoryUsersService() {
-        users.add(new User("elzbieta@example.com", "Elżbieta"));
-        users.add(new User("rajmund@example.com", "Rajmund"));
-    }
-
     @Override
     public User find(UUID id) throws UserNotFound {
         return users.stream().filter(user -> user.getId().equals(id)).findFirst().orElseThrow(UserNotFound::new);
