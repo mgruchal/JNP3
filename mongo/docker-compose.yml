@@ -1,0 +1,29 @@
+version: '3.5'
+services:
+  mongo1:
+    image: mongo
+    command:
+      - mongod
+      - --replSet
+      - "rs0"
+    expose:
+      - 27017
+
+  mongo2:
+    image: mongo
+    command:
+      - mongod
+      - --replSet
+      - "rs0"
+    expose:
+      - 27017
+
+  mongo3:
+    image: mongo
+    command:
+      - mongod
+      - --replSet
+      - "rs0"
+    expose:
+      - 27017
+
