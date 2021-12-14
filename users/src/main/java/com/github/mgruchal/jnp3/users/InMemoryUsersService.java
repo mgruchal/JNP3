@@ -29,6 +29,11 @@ public class InMemoryUsersService implements UsersService {
     }
 
     @Override
+    public User get(String username) throws UserNotFound {
+        return users.stream().filter(user -> user.getUsername().equals(username)).findFirst().orElseThrow(UserNotFound::new);
+    }
+
+    @Override
     public Set<User> getAll() {
         return users;
     }

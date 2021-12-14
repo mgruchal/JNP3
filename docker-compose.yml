@@ -1,0 +1,117 @@
+version: '3.5'
+services:
+  users:
+    image: maven:3-adoptopenjdk-11
+    volumes:
+      - ./users/:/app
+      - ./maven_cache:/root/.m2
+    working_dir: /app
+    command:
+      - mvn
+      - -Dquarkus.http.host=0.0.0.0
+      - quarkus:dev
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:8080 || exit 1"]
+      interval: 15s
+      timeout: 15s
+      retries: 3
+    networks:
+      default:
+      jnp_applications:
+        aliases:
+          - users
+    expose:
+      - 8080
+    ports:
+      - "8011:8080"
+    depends_on:
+      - elasticsearch
+  orders:
+    image: maven:3-adoptopenjdk-11
+    volumes:
+      - ./orders/:/app
+      - ./maven_cache:/root/.m2
+    working_dir: /app
+    command:
+      - mvn
+      - -Dquarkus.http.host=0.0.0.0
+      - quarkus:dev
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:8080 || exit 1"]
+      interval: 15s
+      timeout: 15s
+      retries: 3
+    networks:
+      default:
+      jnp_applications:
+        aliases:
+          - orders
+    expose:
+      - 8080
+    ports:
+      - "8013:8080"
+    depends_on:
+      - elasticsearch
+  relations:
+    image: maven:3-adoptopenjdk-11
+    volumes:
+      - ./relations/:/app
+      - ./maven_cache:/root/.m2
+    working_dir: /app
+    command:
+      - mvn
+      - -Dquarkus.http.host=0.0.0.0
+      - quarkus:dev
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:8080 || exit 1"]
+      interval: 15s
+      timeout: 15s
+      retries: 3
+    networks:
+      default:
+      jnp_applications:
+        aliases:
+          - relations
+    expose:
+      - 8080
+    ports:
+      - "8012:8080"
+    depends_on:
+      - users
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
+    networks:
+      default:
+      jnp_applications:
+        aliases:
+          - elastic
+    environment:
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - cluster.name=docker-cluster
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+  kibana:
+    image: docker.elastic.co/kibana/kibana-oss:7.10.2
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    restart: always
+    ports:
+      - "5601:5601"
+  redis:
+    image: redis:5.0.6
+    mem_swappiness: 0
+    ports:
+      - 6379:6379
+
+networks:
+  jnp_applications:
+    name: jnp_applications
+    internal: true

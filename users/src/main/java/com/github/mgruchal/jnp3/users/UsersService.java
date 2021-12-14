@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public interface UsersService {
     User find(UUID id) throws UserNotFound;
+    User get(String username) throws UserNotFound;
 
     void save(User user) throws UserAlreadyExists;
 

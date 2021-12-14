@@ -53,7 +53,7 @@ paths:
                   $ref: "#/components/schemas/User"
 
       summary: Return a list of users
-  /users/{id}:
+  /users/get/{id}:
     parameters:
       - name: id
         in: path
@@ -103,6 +103,9 @@ components:
         email:
           type: string
           format: email
+        name:
+          type: string
+          example: Adam Kowalski
         id:
           type: string
           format: uuid

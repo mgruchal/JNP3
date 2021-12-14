@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/get/{id}")
     public Response getOne(@PathParam("id") UUID id) {
         Log.info("requested user id=" + id.toString());
         try {
@@ -34,6 +34,20 @@ public class UserController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
+
+    @GET
+    @Path("/find/{username}")
+    public Response findByUsername(@PathParam("username") String username) {
+        Log.info("requested username=" + username);
+        try {
+            var user = users.get(username);
+
+            return Response.ok(user).build();
+        } catch (UsersService.UserNotFound userNotFound) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
